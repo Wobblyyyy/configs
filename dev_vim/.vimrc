@@ -14,32 +14,33 @@ unmap gj
 unmap qm
 unmap q
 
+unmap <C-H>
+unmap <C-J>
+unmap <C-K>
+unmap <C-L>
+
 "" MOVEMENT BINDS
 noremap <S-J> <C-D>
 noremap <S-K> <C-U>
-noremap <S-H> 0wi               .
+noremap <S-H> 0wi
 noremap <S-L> $a
 
 "" MODE BINDS
-inoremap jn <esc>
+inoremap jk <esc>
 
-"" REGISTER BINDS - YANK
-xnoremap gja "ay
-xnoremap gjs "sy
-xnoremap gjd "dy
-xnoremap gjf "fy
-
-"" REGISTER BINDS - CUT
-xnoremap gva "ay
-xnoremap gvs "sy
-xnoremap gvd "dy
-xnoremap gvf "fy
-
-"" REGISTER BINDS - PASTE
-xnoremap gna "ap
-xnoremap gns "sp
-xnoremap gnd "dp
-xnoremap gnf "fp
+"" REGISTER BINDS
+noremap q01 "ay
+noremap q02 "by
+noremap q03 "cy
+noremap q04 "dy
+noremap q91 "ax
+noremap q92 "bx
+noremap q93 "cx
+noremap q94 "dx
+noremap q81 "a0""p
+noremap q82 "b0""p
+noremap q83 "c0""p
+noremap q84 "d0""p
 
 "" MARKER BINDS - SET
 noremap qnh mh
