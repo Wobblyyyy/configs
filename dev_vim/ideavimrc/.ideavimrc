@@ -1,0 +1,33 @@
+inoremap jk <esc>
+inoremap <C-W> <Esc>mv?[\r\nA-Z "'\[\]\(\)\{\}\>\<]<cr>v`vd
+inoremap jjb <esc>v?[\>\<A-Z0-9 .,;\(\)\[\]\{\}]<cr>s
+inoremap jjw <esc>v/[\>\<A-Z0-9 .,;\(\)\[\]\{\}]<cr>s
+
+noremap <S-J> <C-D>
+noremap <S-K> <C-U>
+noremap <S-B> ?[\t\r\nA-Z "'\[\]\(\)\{\}.,;]<cr>
+noremap <S-W> /[\t\r\nA-Z "'\[\]\(\)\{\}.,;]<cr>
+
+noremap <C-A> <C-V>
+
+noremap <C-W> ?[\t\r\nA-Z "'\[\]\(\)\{\}.,;]<cr>lv/[\t\r\nA-Z "'\[\]\(\)\{\}.,;]<cr>h
+vmap <C-W> <esc>`<mb<S-W>/[a-z]<cr><C-W>`>ma`bv`a
+nmap <C-R> <C-W>s
+nmap <C-I> <C-W>d
+
+nmap <BS> <C-W>sjk
+
+noremap no ?[\"]<cr>lv/[\"]<cr>h
+noremap np ?[\(]<cr>lv/[\)]<cr>h
+noremap nc ?[\{]<cr>v/[\}]<cr>
+noremap nn ?[ .,\"\(\{]<cr>lv/[ .,\"\(\{]<cr>h
+
+noremap nwo /[\"]<cr>lv/[\"]<cr>h
+noremap nwp /[\(]<cr>lv/[\)]<cr>h
+noremap nwc /[\{]<cr>v/[\}]<cr>
+noremap nwn /[ .,\"\(\{]<cr>lv/[ .,\"\(\{]<cr>h
+
+noremap nbo ?[\"]<cr>lv?[\"]<cr>h
+noremap nbp ?[\)]<cr>lv?[\(]<cr>h
+noremap nbc ?[\}]<cr>v?[\{]<cr>
+noremap nbn ?[ .,\"\(\{]<cr>lv?[ .,\"\(\{]<cr>h
