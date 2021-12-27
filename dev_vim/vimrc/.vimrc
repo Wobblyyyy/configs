@@ -16,12 +16,39 @@ set tm=500
 set encoding=utf8
 set ffs=unix,dos,mac
 set laststatus=2
-set statusline=%<%F%h%m%r%h%w%y\ %{&ff}\ %{strftime(\"%d/%m/%Y-%H:%M\")}%=\
-set statusline+=byte:%o/%O\
-set statusline+=col:%c%V\
-set statusline+=ascii:%b/%B\
-set statusline+=pos:%o\
-set statusline+=lin:%l\,%L\ %P\
+"" set statusline=%<%F%h%m%r%h%w%y\ %{&ff}\ %{strftime(\"%d/%m/%Y-%H:%M\")}%=\ 
+set statusline=byte:%o/%O\ 
+set statusline+=col:%c%V\ 
+set statusline+=ascii:%b/%B\ 
+set statusline+=pos:%o\ 
+set statusline+=lin:%l\,%L\ %P\ %=\ 
+set statusline+=%<%F%h%m%r%h%w%y\ 
+"" set statusline+=%#warningmsg#\ 
+"" set statusline+=%{SyntasticStatuslineFlag()}\ 
+"" set statusline+=%*\ 
+set nocompatible
+set rtp+=~/.vim/bundle/Vundle.vim
+
+au BufRead,BufNewFile *.v set filetype=v
+color molokai
+
+"" let g:syntastic_always_populate_loc_list = 1
+"" let g:syntastic_auto_loc_list = 1
+"" let g:syntastic_check_on_open = 1
+"" let g:syntastic_check_on_wq = 0
+
+call vundle#begin()
+Plugin 'scrooloose/nerdtree'
+"" Plugin 'scrooloose/syntastic'
+Plugin 'luochen1990/rainbow'
+"" Plugin 'ycm-core/youcompleteme'
+call vundle#end()
+filetype plugin indent on
+
+autocmd StdinReadPre * let s:std_in=1
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+let g:NERDTreeDirArrowExpandable = '>'
+let g:NERDTreeDirArrowCollapsible = '<'
 
 inoremap jk <esc>
 inoremap <C-W> <Esc>mv?[\r\nA-Z "'\[\]\(\)\{\}\>\<]<cr>v`vd
@@ -61,5 +88,5 @@ noremap nbp ?[\)]<cr>lv?[\(]<cr>h
 noremap nbc ?[\}]<cr>v?[\{]<cr>
 noremap nbn ?[ .,\"\(\{]<cr>lv?[ .,\"\(\{]<cr>h
 
-au BufRead,BufNewFile *.v set filetype=v
-color molokai
+nnoremap <C-M> :NERDTreeFocus<cr>
+nnoremap <C-N> :NERDTreeToggle<cr>
