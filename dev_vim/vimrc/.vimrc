@@ -11,8 +11,15 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 
-" automatically indent
+" ai = automatic indent
+" si = smart indent
 set ai
+set si
+
+" line breaks at 80 characters - this is a little bit short by modern
+" standards, some might prefer 120 or even more
+set lbr
+set tw=80
 
 " show colored columns at 80 and 120 - this is good for making sure lines
 " stay under 80 characters
@@ -27,8 +34,6 @@ set magic
 " so annoying...
 set noerrorbells
 set novisualbell
-
-" no idea...
 set t_vb=
 set tm=500
 
@@ -52,28 +57,117 @@ set statusline+=%<%F%h%m%r%h%w%y\
 " disable support for vi so we can use plugins
 set nocompatible
 
+" make searching less case-sensitive
+set ignorecase
+set smartcase
+
+" highlight search results
+set hlsearch
+
+" search every time a character is typed
+set incsearch
+
+" don't redraw the screen while executing macros
+" i'd just like to say, you can get CRAZY performance from this
+" like i just tested this by doing qqjkjjkkq 100000@q and there was next
+" to NO lag
+set lazyredraw
+
+" show search matches while typing
+set showmatch
+
 " set up Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
+
+" 256 color terminal
+set t_Co=256
 
 " add support for vlang
 au BufRead,BufNewFile *.v set filetype=v
 
-" set the color scheme
-color molokai
+" whenever you close and re-open a file, automatically go to the last position
+" you were just editing at
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-" everything related to plugins
-call vundle#begin()
-Plugin 'scrooloose/nerdtree'
-Plugin 'luochen1990/rainbow'
-call vundle#end()
-filetype plugin indent on
+" try enabling the molokai color scheme - if it's not present, fall back
+" to using the koehler color scheme instead
+try
+    color molokai
+catch
+    color koehler
+endtry
 
-" misc. NERDTree things - automatically close vim if NERDTree is the last
-" editor open, change the chars used in displaying the layout
-autocmd StdinReadPre * let s:std_in=1
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-let g:NERDTreeDirArrowExpandable = '>'
-let g:NERDTreeDirArrowCollapsible = '<'
+try
+    call vundle#begin()
+    Plugin 'scrooloose/nerdtree'
+    Plugin 'tpope/vim-commentary'
+    Plugin 'tpope/vim-surround'
+    Plugin 'scrooloose/nerdcommenter'
+    Plugin 'luochen1990/rainbow'
+    Plugin 'rhysd/vim-github-support'
+    Plugin 'powerline/powerline-fonts'
+    Plugin 'vim-airline/vim-airline'
+    Plugin 'vim-airline/vim-airline-themes'
+    call vundle#end()
+
+    filetype plugin indent on
+
+    " NERDTree config
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+    let g:NERDTreeDirArrowExpandable = '>'
+    let g:NERDTreeDirArrowCollapsible = '<'
+
+    " NERDCommenter config
+    " https://github.com/preservim/nerdcommenter
+    let g:NERDCommentEmptyLines = 1
+    let g:NERDTrimTrailingWhitespace = 1
+    let g:NERDSpaceDelims = 1
+
+    " airline config
+    " in order for airline to work properly, you need to be using a font that
+    " supports all of the required characters - on my laptop, i'm using
+    " ubuntu mono and it works perfectly fine. unfortunately, roboto mono
+    " does... NOT work perfectly fine, so yeah... anyways...
+    if !exists('g:airline_symbols')
+        let g:airline_symbols = {}
+    endif
+    
+    " most of this is default airline stuff
+    let g:airline_left_sep = '»'
+    let g:airline_left_sep = '▶'
+    let g:airline_right_sep = '«'
+    let g:airline_right_sep = '◀'
+    let g:airline_symbols.linenr = '␊'
+    let g:airline_symbols.linenr = '␤'
+    let g:airline_symbols.linenr = '¶'
+    let g:airline_symbols.branch = '⎇'
+    let g:airline_symbols.paste = 'ρ'
+    let g:airline_symbols.paste = 'Þ'
+    let g:airline_symbols.paste = '∥'
+    let g:airline_symbols.whitespace = ' '
+    let g:airline_left_sep = ''
+    let g:airline_left_alt_sep = ''
+    let g:airline_right_sep = ''
+    let g:airline_right_alt_sep = ''
+    let g:airline_symbols.branch = ''
+    let g:airline_symbols.readonly = ''
+
+    " by default, airline uses fancy LN and CN characters for line number and
+    " column number, but i really don't like how crowded that looks
+    let g:airline_symbols.linenr = '  L '
+    let g:airline_symbols.colnr = '  C '
+
+    " make sure powerline fonts are being used
+    let g:airline_powerline_fonts = 1
+    let g:Powerline_symbols = 'fancy'
+
+    " and of course we need to have a matching color scheme!
+    let g:airline_theme = 'molokai'
+catch
+endtry
+
+let mapleader = ','
 
 " most important bind by far - jk in insert mode will enter normal mode...
 " i can't even explain how useful this is
@@ -136,11 +230,49 @@ noremap nbp ?[\)]<cr>lv?[\(]<cr>h
 noremap nbc ?[\}]<cr>v?[\{]<cr>
 noremap nbn ?[ .,\"\(\{]<cr>lv?[ .,\"\(\{]<cr>h
 
+" disable the usage of the arrow keys so that you're forced to learn how to
+" use vim... muahaha
+noremap <Up> <Nop>
+noremap <Right> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+
+" space once searches forwards
+" space twice searches backwards
+" space three times resets search highlighting
+noremap <Space> /
+noremap <Space><Space> ?
+noremap <Space><Space><Space> :noh<cr>
+
+" this one is also super important - map control + forward slash to =
+" the NERDCommenter command ',c ' which toggles whether the currently
+" selected lines are commented or not. as an added bonus, use gv at the
+" end to select the last visual selection - how lovely!
+"
+" also, for some reason, you need to use C-_ instead of C-/
+" i'm not sure why, but this might help?
+" https://vi.stackexchange.com/questions/26611/is-it-possible-to-map-control-forward-slash-with-vim
+map <C-_> <leader>c<space>gv
+
+" map ctrl+backspace to ctrl+w, this makes it function just like normal
+" ctrl+backspace on a regular editor
+inoremap <C-H> <C-W>
+
 " make it so < and > (indentation commands) automatically select the last
 " visual selection so you can change multiple levels of indentation at
 " the same time
 noremap > >gv
 noremap < <gv
+
+" if you have word wrapping enabled, you can't navigate around a file
+" normally because you'll end up skipping lines... i don't really know
+" how to explain this, but basically it makes it so it's easier to navigate
+" files with word wrapping...
+noremap j gj
+noremap k gk
+
+" make this more consistent with c and d commands
+noremap Y y$
 
 " open/close/focus NERDtree
 nnoremap <C-M> :NERDTreeFocus<cr>
