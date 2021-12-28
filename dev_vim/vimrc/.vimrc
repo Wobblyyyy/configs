@@ -89,14 +89,6 @@ au BufRead,BufNewFile *.v set filetype=v
 " you were just editing at
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-" try enabling the molokai color scheme - if it's not present, fall back
-" to using the koehler color scheme instead
-try
-    color molokai
-catch
-    color koehler
-endtry
-
 try
     call vundle#begin()
     Plugin 'scrooloose/nerdtree'
@@ -108,6 +100,11 @@ try
     Plugin 'powerline/powerline-fonts'
     Plugin 'vim-airline/vim-airline'
     Plugin 'vim-airline/vim-airline-themes'
+    Plugin 'joshdick/onedark.vim'
+    Plugin 'pangloss/vim-javascript'
+    Plugin 'yggdroot/indentline'
+    Plugin 'plasticboy/vim-markdown'
+    Plugin 'raimondi/delimitmate'
     call vundle#end()
 
     filetype plugin indent on
@@ -163,7 +160,8 @@ try
     let g:Powerline_symbols = 'fancy'
 
     " and of course we need to have a matching color scheme!
-    let g:airline_theme = 'molokai'
+    let g:airline_theme = 'onedark'
+    color onedark
 catch
 endtry
 
@@ -242,7 +240,7 @@ noremap <Left> <Nop>
 " space three times resets search highlighting
 noremap <Space> /
 noremap <Space><Space> ?
-noremap <Space><Space><Space> :noh<cr>
+noremap <Space><Space><Space> :noh<cr>:echo 'Cleared search'<cr>
 
 " this one is also super important - map control + forward slash to =
 " the NERDCommenter command ',c ' which toggles whether the currently
